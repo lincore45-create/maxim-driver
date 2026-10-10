@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;800;900&family=Noto+Sans+Thai:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@800&text=金行茶面饭药酒福記餐堂点心烤鸭庄中糖水栗子新年快乐恭喜发财唐人街&display=swap" rel="stylesheet">
 <style>
 :root{
   --yellow:#FFC800; --black:#141414; --ink:#141414; --white:#ffffff;
@@ -197,15 +198,16 @@ const CONFIG = {
   steerSpeed: 7.5,         // lateral m/s
   gapStart: 70, gapEnd: 26,// metres between spawned obstacles at start / near finish
   tiers: [ {km:1, thb:50}, {km:5, thb:200}, {km:10, thb:500} ],
+  sidewalkDrag: 3,         // speed lost per second while driving on the sidewalk
   retroWidth: 300,         // internal render width in px: lower = chunkier PS1-style pixels
   vertexSnap: true,        // snap vertices to the low-res grid (classic PS1 wobble)
 };
 
 /* ========================= i18n ========================= */
 const I18N = {
-  ru:{ slogan:'Чем дальше проедешь — тем больше заработаешь!', sub:'Побудь водителем Maxim. Доедь до финиша и получи промокод до 500 ฿ на поездки.', lang:'Язык', controls:'Управление', ctlButtons:'Кнопки', ctlTilt:'Наклон', start:'Запустить игру', proto:'Прототип', score:'Очки', dist:'Путь', km:'км', gas:'ГАЗ', brake:'ТОРМОЗ', go:'Поехали!', near:'Вау! На волоске!', crash:'Бам!', splash:'Плюх! Лужа', kmUp:'+100 · {k} км', tierUp:'Промокод {v} открыт!', win:'Финиш!', lose:'Игра окончена', reward:'Твоя награда — промокод', showPromoter:'Покажи этот экран промоутеру, чтобы получить промокод', noReward:'Проедь хотя бы 1 км, чтобы получить промокод', again:'Играть снова', menu:'В меню', tiltOff:'Наклон недоступен — включены кнопки', stamp:'Результат от' },
-  en:{ slogan:'The further you drive, the more you earn!', sub:'Be a Maxim driver. Reach the finish and win a ride promo code worth up to 500 ฿.', lang:'Language', controls:'Controls', ctlButtons:'Buttons', ctlTilt:'Tilt', start:'Start game', proto:'Prototype', score:'Score', dist:'Distance', km:'km', gas:'GAS', brake:'BRAKE', go:'Go!', near:'Wow! Close call!', crash:'Bang!', splash:'Splash!', kmUp:'+100 · {k} km', tierUp:'{v} promo code unlocked!', win:'Finish!', lose:'Game over', reward:'Your reward — promo code', showPromoter:'Show this screen to the promoter to get your promo code', noReward:'Drive at least 1 km to earn a promo code', again:'Play again', menu:'Menu', tiltOff:'Tilt unavailable — buttons enabled', stamp:'Result from' },
-  th:{ slogan:'ยิ่งขับไกล ยิ่งได้มาก!', sub:'ลองเป็นคนขับ Maxim ขับให้ถึงเส้นชัย รับโค้ดส่วนลดค่าเดินทางสูงสุด 500 บาท', lang:'ภาษา', controls:'การควบคุม', ctlButtons:'ปุ่มกด', ctlTilt:'เอียงเครื่อง', start:'เริ่มเกม', proto:'ต้นแบบ', score:'คะแนน', dist:'ระยะทาง', km:'กม.', gas:'เร่ง', brake:'เบรก', go:'ไปเลย!', near:'ว้าว! เฉียดฉิว!', crash:'โครม!', splash:'จ๋อม! แอ่งน้ำ', kmUp:'+100 · {k} กม.', tierUp:'ปลดล็อกโค้ด {v}!', win:'ถึงเส้นชัย!', lose:'จบเกม', reward:'รางวัลของคุณ — โค้ดส่วนลด', showPromoter:'แสดงหน้าจอนี้ให้โปรโมเตอร์เพื่อรับโค้ดส่วนลด', noReward:'ขับให้ได้อย่างน้อย 1 กม. เพื่อรับโค้ดส่วนลด', again:'เล่นอีกครั้ง', menu:'เมนู', tiltOff:'ใช้การเอียงไม่ได้ — เปลี่ยนเป็นปุ่มกด', stamp:'ผลการเล่นเมื่อ' },
+  ru:{ slogan:'Чем дальше проедешь — тем больше заработаешь!', sub:'Побудь водителем Maxim. Доедь до финиша и получи промокод до 500 ฿ на поездки.', lang:'Язык', controls:'Управление', ctlButtons:'Кнопки', ctlTilt:'Наклон', start:'Запустить игру', proto:'Прототип', score:'Очки', dist:'Путь', km:'км', gas:'ГАЗ', brake:'ТОРМОЗ', go:'Поехали!', near:'Вау! На волоске!', crash:'Бам!', splash:'Плюх! Лужа', kmUp:'+100 · {k} км', tierUp:'Промокод {v} открыт!', win:'Финиш!', lose:'Игра окончена', reward:'Твоя награда — промокод', showPromoter:'Покажи этот экран промоутеру, чтобы получить промокод', noReward:'Проедь хотя бы 1 км, чтобы получить промокод', again:'Играть снова', menu:'В меню', tiltOff:'Наклон недоступен — включены кнопки', stamp:'Результат от', dThai:'Тайский квартал', dChina:'Чайнатаун', dBiz:'Бизнес-центр' },
+  en:{ slogan:'The further you drive, the more you earn!', sub:'Be a Maxim driver. Reach the finish and win a ride promo code worth up to 500 ฿.', lang:'Language', controls:'Controls', ctlButtons:'Buttons', ctlTilt:'Tilt', start:'Start game', proto:'Prototype', score:'Score', dist:'Distance', km:'km', gas:'GAS', brake:'BRAKE', go:'Go!', near:'Wow! Close call!', crash:'Bang!', splash:'Splash!', kmUp:'+100 · {k} km', tierUp:'{v} promo code unlocked!', win:'Finish!', lose:'Game over', reward:'Your reward — promo code', showPromoter:'Show this screen to the promoter to get your promo code', noReward:'Drive at least 1 km to earn a promo code', again:'Play again', menu:'Menu', tiltOff:'Tilt unavailable — buttons enabled', stamp:'Result from', dThai:'Thai Quarter', dChina:'Chinatown', dBiz:'Business District' },
+  th:{ slogan:'ยิ่งขับไกล ยิ่งได้มาก!', sub:'ลองเป็นคนขับ Maxim ขับให้ถึงเส้นชัย รับโค้ดส่วนลดค่าเดินทางสูงสุด 500 บาท', lang:'ภาษา', controls:'การควบคุม', ctlButtons:'ปุ่มกด', ctlTilt:'เอียงเครื่อง', start:'เริ่มเกม', proto:'ต้นแบบ', score:'คะแนน', dist:'ระยะทาง', km:'กม.', gas:'เร่ง', brake:'เบรก', go:'ไปเลย!', near:'ว้าว! เฉียดฉิว!', crash:'โครม!', splash:'จ๋อม! แอ่งน้ำ', kmUp:'+100 · {k} กม.', tierUp:'ปลดล็อกโค้ด {v}!', win:'ถึงเส้นชัย!', lose:'จบเกม', reward:'รางวัลของคุณ — โค้ดส่วนลด', showPromoter:'แสดงหน้าจอนี้ให้โปรโมเตอร์เพื่อรับโค้ดส่วนลด', noReward:'ขับให้ได้อย่างน้อย 1 กม. เพื่อรับโค้ดส่วนลด', again:'เล่นอีกครั้ง', menu:'เมนู', tiltOff:'ใช้การเอียงไม่ได้ — เปลี่ยนเป็นปุ่มกด', stamp:'ผลการเล่นเมื่อ', dThai:'ย่านไทย', dChina:'ไชน่าทาวน์', dBiz:'ย่านธุรกิจ' },
 };
 const LOCALE = { ru:'ru-RU', en:'en-GB', th:'th-TH' };
 let lang = 'th';
@@ -289,6 +291,7 @@ const SND = (() => {
     win(){ [523, 659, 784, 1047].forEach((f, i) => tone(f, .28, 'square', .1, i * .12)); tone(1047, .7, 'triangle', .14, .5); },
     lose(){ [392, 330, 262].forEach((f, i) => tone(f, .38, 'triangle', .16, i * .22)); },
     tick(){ tone(700, .05, 'square', .05); },
+    smash(){ noise(.35, 2400, .38); tone(420, .16, 'square', .07, 0, 140); },
   };
   function setMuted(m){ muted = m; if (master) master.gain.setTargetAtTime(m ? 0 : 0.9, ac.currentTime, 0.02); }
   function suspend(){ if (ac && ac.state === 'running') ac.suspend(); }
@@ -372,6 +375,7 @@ function hull(xc, zN, zF, h0, h1, hw0, hw1, tn, tf, c, cNear, cTop, cSide){
   if (xc - mw > camX) poly([a, e, hh, d], shade(side, .05));
   if (xc + mw < camX) poly([b, f, g, cc], shade(side, -.3));
   if (h1 < camH) poly([d, cc, g, hh], cTop || shade(c, .22));
+  if (h0 > camH) poly([a, b, f, e], shade(c, -.28));
   poly([a, b, cc, d], cNear || shade(c, -.1));
   return { a, b, c: cc, d, s: a[2] };
 }
@@ -386,7 +390,7 @@ function ftext(f, txt, u, v, hFrac, c){
   if (!f) return;
   const p = fpt(f, u, v), hp = Math.abs(fpt(f, u, 0)[1] - fpt(f, u, 1)[1]) * hFrac, wp = Math.abs(fpt(f, 1, v)[0] - fpt(f, 0, v)[0]);
   const size = Math.min(hp, wp * .9 / (txt.length * .62)); if (size < 3.5) return;
-  ctx.fillStyle = rgb(fogc(c)); ctx.font = `900 ${size.toFixed(1)}px Rubik, 'Noto Sans Thai', sans-serif`;
+  ctx.fillStyle = rgb(fogc(c)); ctx.font = `900 ${size.toFixed(1)}px Rubik, 'Noto Sans Thai', 'Noto Sans SC', sans-serif`;
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(txt, p[0], p[1] + size * .05);
 }
 function shadow(x, zN, zF, hw){
@@ -406,6 +410,305 @@ function octa(x, y, r, c){
   poly(pts, c);
 }
 
+/* ========================= Districts & sidewalk props ========================= */
+// three districts, split at gaps between buildings: Thai quarter → Chinatown → business district
+const GATE_Z = [1, 2].map(i => Math.round((FINISH_Z * i / 3 - 23) / 24) * 24 + 23);
+const districtIdx = z => z < GATE_Z[0] ? 0 : z < GATE_Z[1] ? 1 : 2;
+const pick = (arr, r) => arr[Math.min(arr.length - 1, Math.floor(r * arr.length))];
+function pickW(list, r){ let s = 0; for (const it of list) s += it[1]; r *= s; for (const it of list){ if ((r -= it[1]) < 0) return it[0]; } return list[0][0]; }
+const DISTRICTS = [
+  { id:'thai', name:'dThai', hMin:7, hVar:9, signP:.6,
+    bld:['#7FD1C7','#F4A6A0','#B9A7F2','#9FD38A','#8EC5F0','#F6C48B','#E9E2D5','#F2A9CF'],
+    awn:['#E5484D','#00A6A6','#1E5BD8','#2BB673','#F0386B','#FF8A3D'],
+    sign:['#E5484D','#00A6A6','#1E5BD8','#141414','#F0386B','#2BB673','#FF8A3D'],
+    signTxt:['ร้าน','กาแฟ','ส้มตำ','ร้านยา','ร้านทอง','ข้าวแกง','ก๋วยเตี๋ยว','นวดไทย'],
+    shop:['ข้าวมันไก่','ก๋วยเตี๋ยว','ส้มตำ','กาแฟสด','ร้านยา','มินิมาร์ท','ชาไทย','NOODLE BAR','ร้านตัดผม'],
+    ads:['ส้มตำ\n40฿','ผัดไทย','ชาไทย\nเย็น','กาแฟสด','SALE\n50%','ข้าวมันไก่','MENU','ข้าวเหนียว\nมะม่วง','หมูกระทะ'],
+    cartTxt:['ก๋วยเตี๋ยว','ไก่ทอด','ผลไม้','หมูปิ้ง','น้ำมะพร้าว'],
+    pots:['bush','flower','snake','palm','jar','jar'],
+    walk:[[220,212,196],[211,203,187]], curb:[[229,72,77],[242,242,238]],
+    props:[['pot',38],['board',18],['cart',14],['spirit',12],['billboard',10]], density:.7 },
+  { id:'china', name:'dChina', hMin:12, hVar:10, signP:.9,
+    bld:['#B8322F','#D9A441','#EADBC0','#4E9A86','#9C4A3A','#E2C79A','#C65B3C'],
+    awn:['#C8102E','#E0A526','#1E6B52','#7A1E1E'],
+    sign:['#C8102E','#141414','#B8860B','#1E6B52','#C8102E'],
+    signTxt:['金行','茶','面','饭','药','酒','福','記','餐','堂','金'],
+    shop:['点心','烤鸭','茶庄','金行','เป็ดย่าง','ติ่มซำ','ร้านทอง','中药','ร้านน้ำชา'],
+    ads:['点心\nDIM SUM','烤鸭\nเป็ดย่าง','茶\nTEA','金\nGOLD','面\nNOODLE','药\nHERBS','ร้านทอง','ติ่มซำ'],
+    cartTxt:['点心','烤鸭','糖水','栗子'],
+    pots:['bamboo','bonsai','bamboo','flower'],
+    walk:[[204,176,160],[194,166,150]], curb:[[229,72,77],[242,242,238]],
+    props:[['pot',36],['board',24],['cart',16],['billboard',14]], density:.72 },
+  { id:'biz', name:'dBiz', hMin:24, hVar:38, signP:0,
+    bld:['#5B7FA6','#7DA3C4','#3E5C7A','#9BB7CF','#6E8FAE','#4A6D8C','#A9BFD0'],
+    corp:['BANK','OFFICE','HOTEL','PLAZA','TOWER','MALL','CO-WORK','FINANCE'],
+    sign:['#1E5BD8','#141414','#2BB673','#E5484D','#5B6B7A'],
+    ads:['COFFEE','LUNCH\nSET','SUSHI','GYM','SALE','BURGER','SALAD\nBAR','TEA'],
+    pots:['cube','snake','palm','cube'],
+    walk:[[206,208,212],[196,198,203]], curb:[[120,124,132],[232,232,232]],
+    props:[['planter',30],['pot',18],['bench',20],['board',14],['billboard',16]], density:.62 },
+];
+const PROPS = {
+  lamp:{hw:.2,hl:.2,heavy:1}, tree:{hw:.45,hl:.45,heavy:1}, pot:{hw:.36,hl:.36}, board:{hw:.5,hl:.3},
+  cart:{hw:.8,hl:.6}, spirit:{hw:.38,hl:.38}, billboard:{hw:1.4,hl:.25,heavy:1}, bench:{hw:.85,hl:.32},
+  planter:{hw:.62,hl:.62}, km:{hw:1.3,hl:.2,heavy:1},
+};
+const PROP_X = { pot: s => rnd(s + .5) > .5 ? 7.62 : 6.5, board: () => 6.55, cart: () => 7.15, spirit: () => 7.8, billboard: () => 7.35, bench: () => 7.7, planter: () => 7.45 };
+const PROP_K = { pot:1.35, board:1.3, bench:1.25, planter:1.25, cart:1.2, spirit:1.3 }; // small props drawn a bit oversized so they read at low resolution
+const BLOCK = 30, KM_Z = km => km * 1000 / CONFIG.distanceScale;
+
+function addProp(k, side, x, z, s, extra){
+  const sc = PROP_K[k] || 1;
+  G.props.push({ k, side, x, z, seed: s, di: districtIdx(z), ...PROPS[k], hw: PROPS[k].hw * sc, hl: PROPS[k].hl * sc, sc, hit:false, hy:0, vy:0, kvx:0, kvz:0, sq:1, ...extra });
+}
+function genBlock(b){
+  const z0 = b * BLOCK, D = DISTRICTS[districtIdx(z0 + 15)];
+  const kms = []; for (let km = 1; km < CONFIG.raceKm; km++){ const kz = KM_Z(km); if (kz >= z0 && kz < z0 + BLOCK) kms.push([km, kz]); }
+  const nearKm = z => kms.some(k => Math.abs(k[1] - z) < 4);
+  for (const side of [-1, 1]){
+    const sk = b * 2 + (side > 0 ? 1 : 0);
+    if ((b + (side > 0 ? 1 : 0)) % 2){ if (!(side < 0 && nearKm(z0))) addProp('lamp', side, side * (ROAD_HALF + .9), z0, sk); }
+    else if (!(side < 0 && nearKm(z0 + 8))) addProp('tree', side, side * (ROAD_HALF + 1.7), z0 + 8, sk);
+    for (const off of [15, 23]){
+      const z = z0 + off, s = sk * 7 + off;
+      if (rnd(s + .13) > D.density || (side < 0 && nearKm(z))) continue;
+      const k = pickW(D.props, rnd(s + .31));
+      addProp(k, side, side * PROP_X[k](s), z, s);
+    }
+  }
+  for (const [km, kz] of kms) addProp('km', -1, -(ROAD_HALF + 1.6), kz, km, { km });
+}
+function hitProp(p){
+  p.hit = true;
+  const dir = Math.sign(p.x - G.x) || p.side;
+  p.kvx = dir * (p.heavy ? 2 : 3.5 + rnd(p.seed) * 3);
+  p.kvz = G.speed * (p.heavy ? .2 : .7);
+  p.vy = p.heavy ? 0 : 5 + rnd(p.seed + 1) * 3; p.hy = p.heavy ? 0 : .01;
+  G.vx = -p.side * 3.5;
+  SND.sfx.smash(); G.shake = Math.max(G.shake, .25);
+  if (G.invuln <= 0) crash(null);
+}
+function updateProps(dt){
+  while (G.nextBlock * BLOCK < G.z + DRAW_DIST + BLOCK) genBlock(G.nextBlock++);
+  for (const p of G.props){
+    if (!p.hit){
+      if (Math.abs(p.x - G.x) < p.hw + PLAYER.hw && Math.abs(p.z - G.z) < p.hl + PLAYER.hl) hitProp(p);
+      continue;
+    }
+    if (p.heavy) p.sq = Math.max(.25, p.sq - dt * 3.5);
+    p.x += p.kvx * dt; p.z += p.kvz * dt;
+    const damp = Math.pow(p.hy > 0 ? .5 : .08, dt); p.kvx *= damp; p.kvz *= damp;
+    if (p.hy > 0 || p.vy > 0){
+      p.vy -= 24 * dt; p.hy += p.vy * dt;
+      if (p.hy <= 0){ p.hy = 0; p.vy = Math.abs(p.vy) > 2.5 ? -p.vy * .35 : 0; if (p.vy) p.hy = .01; }
+    }
+    const lim = ROAD_HALF + 2.5; if (Math.abs(p.x) > lim){ p.x = Math.sign(p.x) * lim; p.kvx = 0; }
+  }
+  G.props = G.props.filter(p => p.z - G.z > -30);
+}
+
+/* ------- props ------- */
+const PC = { terra:[196,98,58], blue:[52,96,170], white:[236,234,228], jar:[96,60,42], porc:[234,238,242], ink:[40,80,170],
+  gold:[226,180,60], pink:[240,96,150], sun:[255,210,60], bamboo:[104,172,72], stone:[184,188,194] };
+function ftextLines(f, txt, hFrac, c){
+  const L = txt.split('\n');
+  L.forEach((l, i) => ftext(f, l, .5, L.length === 1 ? .5 : .7 - i * .4, hFrac / L.length * 1.15, c));
+}
+function drawProp(p){
+  if (p.z + 2.5 - camZ < NEAR) return;
+  setFog(p.z);
+  const y = p.hy, q = p.sq, x = p.x, z = p.z, s = p.seed, side = p.side, D = DISTRICTS[p.di];
+  const K = p.sc, X = v => x + (v - x) * K, Z = v => z + (v - z) * K;
+  const B_ = (cx, hw, zn, zf, h0, h1, c, n, t, sd) => box(X(cx), hw * K, Z(zn), Z(zf), y + h0 * q * K, y + h1 * q * K, c, n, t, sd);
+  const H_ = (cx, zn, zf, h0, h1, a, b, tn, tf, c) => hull(X(cx), Z(zn), Z(zf), y + h0 * q * K, y + h1 * q * K, a * K, b * K, tn * K, tf * K, c);
+  const inv = -side;
+  switch (p.k){
+    case 'lamp':
+      if (p.di === 2){
+        const st = [150,156,166];
+        B_(x, .07, z - .07, z + .07, 0, 7.4, st); B_(x + inv * .8, .8, z - .05, z + .05, 7.25, 7.4, st);
+        B_(x + inv * 1.5, .38, z - .1, z + .1, 7.1, 7.25, [235,246,255]);
+      } else {
+        B_(x, .08, z - .08, z + .08, 0, 6.2, COL.pole); B_(x + inv * .7, .7, z - .06, z + .06, 6.05, 6.2, COL.pole);
+        B_(x + inv * 1.35, .24, z - .13, z + .13, 5.86, 6.06, [252,246,214]);
+        if (p.di === 1){ B_(x + inv * .3, .26, z - .26, z + .26, 4.3, 4.95, [214,40,40]); B_(x + inv * .3, .14, z - .14, z + .14, 4.95, 5.05, PC.gold); B_(x + inv * .3, .1, z - .1, z + .1, 4.1, 4.3, PC.gold); }
+      }
+      break;
+    case 'tree': {
+      const g = rnd(s) > .5 ? COL.leaf : COL.leaf2;
+      if (p.di === 2){
+        B_(x, .62, z - .62, z + .62, 0, .6, PC.stone); B_(x, .54, z - .54, z + .54, .6, .66, [96,72,52]);
+        B_(x, .1, z - .1, z + .1, .6, 2.6, COL.bark);
+        H_(x, z - .95, z + .95, 2.2, 5.8, .95, .1, .85, .85, [56,150,84]);
+      } else if (p.di === 0 && rnd(s + .4) > .6){
+        B_(x, .12, z - .12, z + .12, 0, 4.6, [150,118,80]);
+        B_(x + .22, .16, z - .16, z + .16, 4.05, 4.4, [110,80,40]); B_(x - .2, .15, z + .05, z + .35, 4.05, 4.35, [110,80,40]);
+        H_(x, z - 1.9, z + 1.9, 4.3, 4.95, 2.0, .15, 1.75, 1.75, [62,164,82]);
+      } else if (p.di === 1){
+        B_(x, .13, z - .13, z + .13, 0, 2.0, COL.bark);
+        H_(x, z - 1.0, z + 1.0, 1.7, 2.6, .7, 1.25, 0, 0, g);
+        H_(x, z - 1.0, z + 1.0, 2.6, 3.9, 1.25, .35, 0, .6, shade(g, .07));
+      } else {
+        B_(x, .13, z - .13, z + .13, 0, 2.2, COL.bark);
+        H_(x, z - 1.3, z + 1.3, 1.9, 3.3, 1.35, 1.0, .35, .35, g);
+        H_(x, z - 1.0, z + 1.0, 3.3, 4.8, 1.0, .16, .82, .82, shade(g, .07));
+      }
+      break;
+    }
+    case 'pot': drawPot(pick(D.pots, rnd(s + .2)), x, z, B_, H_, s); break;
+    case 'board': {
+      const bc = hex(pick(D.sign, rnd(s + .3))), txt = pick(D.ads, rnd(s + .5));
+      B_(x - .4, .04, z + .02, z + .3, 0, 1.25, COL.dark); B_(x + .4, .04, z + .02, z + .3, 0, 1.25, COL.dark);
+      const f = B_(x, .48, z - .06, z + .04, .2, 1.38, bc);
+      if (f){ fq(f, .07, .07, .93, .93, p.di === 1 ? [36,34,32] : [250,246,236]); ftextLines(f, txt, .62, p.di === 1 ? [255,214,90] : bc); }
+      break;
+    }
+    case 'cart': {
+      const cc = p.di === 1 ? [190,36,36] : [196,202,210], uc = hex(pick(D.awn || D.sign, rnd(s + .6)));
+      if (y < .05) shadow(x, z - .75 * K, z + .75 * K, .95 * K);
+      for (const sx of [-1, 1]) B_(x + sx * .64, .1, z - .25, z + .25, 0, .52, COL.tire);
+      const f = B_(x, .8, z - .55, z + .55, .35, 1.05, cc);
+      B_(x, .7, z - .45, z + .45, 1.05, 1.45, [178,218,234]);
+      B_(x, .7, z - .45, z + .45, 1.45, 1.52, cc);
+      B_(x, .04, z - .04, z + .04, 1.52, 2.3, COL.pole);
+      H_(x, z - 1.05, z + 1.05, 2.25, 2.78, 1.3, .08, .98, .98, uc);
+      if (f){ fq(f, 0, 0, 1, .18, uc); ftext(f, pick(D.cartTxt || ['FOOD'], rnd(s + .7)), .5, .6, .5, p.di === 1 ? [255,214,90] : [40,44,52]); }
+      break;
+    }
+    case 'spirit': {
+      const w = [244,240,232], red = [200,50,40];
+      B_(x, .09, z - .09, z + .09, 0, 1.35, w);
+      B_(x, .4, z - .4, z + .4, 1.35, 1.45, w);
+      B_(x, .25, z - .25, z + .25, 1.45, 1.88, PC.gold);
+      B_(x, .1, z - .27, z - .25, 1.5, 1.75, [120,40,30]);
+      H_(x, z - .36, z + .36, 1.88, 2.3, .36, .04, .32, .32, red);
+      B_(x, .03, z - .03, z + .03, 2.3, 2.55, PC.gold);
+      B_(x - .3, .05, z - .38, z - .3, 1.45, 1.62, PC.pink); B_(x + .3, .05, z - .38, z - .3, 1.45, 1.62, PC.sun);
+      break;
+    }
+    case 'billboard': {
+      const maxim = rnd(s + .8) < .2, bc = maxim ? COL.yellow : hex(pick(D.sign, rnd(s + .3)));
+      for (const sx of [-1, 1]) B_(x + sx * 1.0, .07, z + .05, z + .19, 0, 2.3, COL.pole);
+      const f = B_(x, 1.4, z, z + .16, 2.3, 4.1, bc);
+      if (f){
+        if (maxim){ fq(f, 0, 0, 1, .24, COL.black); ftext(f, 'MAXIM', .5, .62, .55, COL.black); ftext(f, 'TAXI · DELIVERY', .5, .12, .16, COL.yellow); }
+        else { fq(f, .04, .08, .96, .92, shade(bc, .14)); ftextLines(f, pick(D.ads, rnd(s + .5)), .6, COL.white); }
+      }
+      break;
+    }
+    case 'bench': {
+      const wd = [156,112,70];
+      for (const sx of [-1, 1]) B_(x + sx * .72, .05, z - .26, z + .26, 0, .45, COL.pole);
+      B_(x, .85, z - .28, z + .2, .42, .5, wd); B_(x, .85, z + .2, z + .3, .5, .95, wd);
+      break;
+    }
+    case 'planter':
+      B_(x, .62, z - .62, z + .62, 0, .55, PC.stone);
+      H_(x, z - .56, z + .56, .55, 1.0, .56, .38, .14, .14, [70,150,80]);
+      B_(x - .2, .07, z - .3, z - .16, .95, 1.1, PC.pink); B_(x + .25, .07, z + .05, z + .19, .95, 1.1, PC.sun);
+      break;
+    case 'km': {
+      for (const sx of [-1, 1]) B_(x + sx * 1.0, .06, z + .02, z + .1, 0, 2.3, COL.pole);
+      const f = B_(x, 1.3, z, z + .12, 2.2, 3.6, COL.green);
+      if (f){ fq(f, .05, .08, .95, .92, shade(COL.green, .08)); ftext(f, p.km + ' KM', .5, .5, .55, COL.white); }
+      break;
+    }
+  }
+}
+function drawPot(v, x, z, B_, H_, s){
+  const leaf = rnd(s + .9) > .5 ? COL.leaf : COL.leaf2;
+  const pot = (c) => { H_(x, z - .3, z + .3, 0, .55, .25, .34, 0, 0, c); B_(x, .36, z - .36, z + .36, .55, .62, shade(c, .1)); };
+  switch (v){
+    case 'bush':
+      pot(PC.terra);
+      H_(x, z - .42, z + .42, .6, 1.05, .44, .32, .08, .08, leaf);
+      H_(x, z - .32, z + .32, 1.05, 1.36, .32, .06, .26, .26, shade(leaf, .08)); break;
+    case 'flower':
+      pot(PC.blue);
+      H_(x, z - .36, z + .36, .6, .95, .38, .26, .06, .06, leaf);
+      B_(x - .16, .07, z - .2, z - .06, .9, 1.06, PC.pink); B_(x + .14, .07, z - .1, z + .04, .92, 1.08, PC.sun); B_(x, .07, z + .08, z + .22, .95, 1.1, PC.pink); break;
+    case 'snake':
+      pot(PC.white);
+      B_(x - .13, .05, z - .05, z + .05, .6, 1.6, [44,120,64]); B_(x + .02, .05, z - .02, z + .08, .6, 1.85, [52,134,70]);
+      B_(x + .15, .05, z - .08, z + .02, .6, 1.42, [44,120,64]); break;
+    case 'palm':
+      pot(PC.terra);
+      B_(x, .04, z - .04, z + .04, .6, 1.6, [110,140,70]);
+      H_(x, z - .62, z + .62, 1.45, 1.8, .66, .08, .56, .56, [70,170,90]); break;
+    case 'jar':
+      H_(x, z - .4, z + .4, 0, .45, .3, .46, 0, 0, PC.jar); H_(x, z - .46, z + .46, .45, .86, .46, .28, .06, .06, PC.jar);
+      B_(x, .47, z - .47, z + .47, .4, .5, PC.gold);
+      H_(x, z - .5, z + .5, .86, .94, .5, .42, 0, 0, [60,150,80]);
+      B_(x + .1, .07, z - .07, z + .07, .9, 1.32, PC.pink); break;
+    case 'bamboo':
+      H_(x, z - .32, z + .32, 0, .62, .28, .34, 0, 0, PC.porc); B_(x, .35, z - .35, z + .35, .24, .36, PC.ink);
+      for (const [dx, dz, h] of [[-.14, -.08, 2.2], [.04, .06, 2.5], [.16, -.1, 1.9], [-.04, .14, 2.05]]){
+        B_(x + dx, .045, z + dz - .045, z + dz + .045, .62, h, PC.bamboo);
+        H_(x + dx, z + dz - .25, z + dz + .25, h - .3, h + .08, .28, .04, .2, .2, [80,160,70]);
+      }
+      break;
+    case 'bonsai':
+      H_(x, z - .38, z + .38, 0, .3, .42, .46, 0, 0, [60,96,86]);
+      B_(x, .06, z - .06, z + .06, .3, .78, COL.bark);
+      H_(x + .2, z - .34, z + .34, .76, 1.02, .46, .2, .15, .15, COL.leaf2);
+      H_(x - .15, z - .26, z + .26, 1.0, 1.22, .32, .1, .12, .12, COL.leaf); break;
+    case 'cube':
+      B_(x, .36, z - .36, z + .36, 0, .72, [238,238,236]);
+      H_(x, z - .34, z + .34, .72, 1.25, .34, .08, .1, .1, [90,170,80]); break;
+  }
+}
+
+/* ------- overhead: Chinatown lanterns, New Year banners, district gates ------- */
+function overheadItems(){
+  const out = [], lo = camZ + NEAR, hi = camZ + DRAW_DIST;
+  GATE_Z.forEach((gz, i) => { if (gz > lo && gz < hi) out.push({ z: gz, kind: i ? 'bizgate' : 'chinagate' }); });
+  const a = GATE_Z[0] + 60, b = GATE_Z[1] - 40;
+  for (let k = Math.ceil(Math.max(lo, a) / 90); k * 90 < Math.min(hi, b); k++) out.push({ z: k * 90, kind: k % 4 === 2 ? 'banner' : 'lanterns', k });
+  return out;
+}
+function drawOver(o){
+  const z = o.z; if (z - camZ < NEAR) return;
+  setFog(z);
+  const W2 = 8.4, gold = [255,206,70];
+  const rope = (x0, h0, x1, h1) => { const a = P(x0, z, h0), b = P(x1, z, h1); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.strokeStyle = rgb(fogc([60,40,30])); ctx.lineWidth = Math.max(1, a[2] * .05); ctx.stroke(); };
+  if (o.kind === 'lanterns'){
+    const hAt = x => 12.7 - .9 * (1 - (x / W2) ** 2);
+    for (let i = 0; i < 12; i++){ const xa = -W2 + i * W2 / 6, xb = xa + W2 / 6; rope(xa, hAt(xa), xb, hAt(xb)); }
+    for (let i = 0; i < 7; i++){
+      const xx = -W2 + (i + .5) * W2 * 2 / 7, hh = hAt(xx);
+      box(xx, .26, z - .26, z + .26, hh - .78, hh - .12, [214,40,40]);
+      box(xx, .14, z - .14, z + .14, hh - .12, hh - .04, gold);
+      box(xx, .05, z - .05, z + .05, hh - 1.05, hh - .78, gold);
+    }
+  } else if (o.kind === 'banner'){
+    const h0 = 11.4, h1 = 13.2;
+    for (const sx of [-1, 1]){ rope(sx * W2, h1, sx * (W2 + .2), h1 + 1.2); rope(sx * W2, h0, sx * (W2 + .2), h0 - .6); }
+    const f = box(0, W2, z - .06, z + .06, h0, h1, [200,24,30]);
+    if (f){
+      fq(f, 0, 0, 1, .07, gold); fq(f, 0, .93, 1, 1, gold); fq(f, 0, 0, .012, 1, gold); fq(f, .988, 0, 1, 1, gold);
+      ftext(f, o.k % 8 === 2 ? '新年快乐' : '恭喜发财', .5, .64, .5, gold);
+      ftext(f, 'สุขสันต์วันตรุษจีน · HAPPY CHINESE NEW YEAR', .5, .23, .2, [255,236,180]);
+    }
+    for (const sx of [-.62, -.22, .22, .62]) box(sx * W2, .1, z - .05, z + .05, h0 - .7, h0, gold);
+  } else if (o.kind === 'chinagate'){
+    const red = [190,30,30], green = [40,118,92], X = 8.3;
+    for (const sx of [-1, 1]){ box(sx * X, .4, z - .4, z + .4, 0, .6, [130,130,128]); box(sx * X, .3, z - .3, z + .3, .6, 12.4, red); box(sx * X, .34, z - .34, z + .34, 9.6, 9.9, gold); }
+    box(0, X + .3, z - .2, z + .2, 10.6, 11.0, gold);
+    const beam = box(0, X + .7, z - .28, z + .28, 11.6, 12.4, red);
+    if (beam) ftext(beam, 'ไชน่าทาวน์ · CHINATOWN', .5, .5, .55, gold);
+    const f = box(0, 2.4, z - .32, z + .32, 12.4, 14.4, [24,60,48]);
+    if (f){ fq(f, .04, .06, .96, .94, [30,84,64]); ftext(f, '唐人街', .5, .5, .7, gold); }
+    hull(0, z - 1.4, z + 1.4, 14.4, 15.8, X + 1.6, X - 1.2, .95, .95, green);
+    box(0, X - 1.0, z - .12, z + .12, 15.8, 16.2, red);
+    for (const sx of [-1, 1]) box(sx * (X - 1.0), .3, z - .2, z + .2, 15.8, 16.6, gold);
+  } else {
+    const X = 8.3;
+    for (const sx of [-1, 1]) box(sx * X, .26, z - .26, z + .26, 0, 13.0, [150,158,170]);
+    const f = box(0, X + .3, z - .3, z + .3, 11.6, 13.0, [64,74,90]);
+    if (f){ fq(f, 0, 0, 1, .12, COL.yellow); ftext(f, 'BUSINESS DISTRICT · ย่านธุรกิจ', .5, .58, .5, COL.white); }
+  }
+}
+
 /* ========================= Game state ========================= */
 let state = 'menu', ctlMode = 'buttons', G = null, paused = false;
 const input = { left:false, right:false, gas:false, brake:false };
@@ -414,7 +717,7 @@ let tilt = { seen:false, base:null, steer:0 };
 function newGame(){
   G = { z:0, x:-1.4, vx:0, speed:CONFIG.speedStart, cruise:CONFIG.speedStart, lives:CONFIG.lives, invuln:0,
         score:0, near:0, kmPassed:0, objs:[], nextSpawn:120, popups:[], time:0, lean:0, shake:0, flash:0,
-        over:false, win:false, endTimer:0, tierShown:0 };
+        over:false, win:false, endTimer:0, tierShown:0, props:[], nextBlock:-1, di:0, onWalk:false };
 }
 const displayKm = () => Math.min(CONFIG.raceKm, G.z * CONFIG.distanceScale / 1000);
 function popup(text, color = '#fff', size = 30, life = 1.1){ G.popups.push({ text, color, size, life, t:0 }); }
@@ -485,12 +788,17 @@ function update(dt){
   if (!btn && ctlMode === 'tilt') target = tilt.steer * CONFIG.steerSpeed * 1.1;
   G.vx += (target - G.vx) * Math.min(1, dt * 10);
   G.x += G.vx * dt;
-  const lim = ROAD_HALF - PLAYER.hw - 0.05;
+  const lim = ROAD_HALF + 2.4 - PLAYER.hw;
   if (G.x < -lim){ G.x = -lim; G.vx = 0; } if (G.x > lim){ G.x = lim; G.vx = 0; }
   G.lean += (G.vx / CONFIG.steerSpeed - G.lean) * Math.min(1, dt * 8);
 
+  const onWalk = Math.abs(G.x) > ROAD_HALF + .15;
+  if (onWalk !== G.onWalk){ G.onWalk = onWalk; G.shake = Math.max(G.shake, .12); SND.sfx.tick(); }
+  if (onWalk) G.speed = Math.max(CONFIG.speedMin, G.speed - CONFIG.sidewalkDrag * dt);
   G.z += G.speed * dt;
   if (G.invuln > 0) G.invuln -= dt;
+  const di = districtIdx(G.z);
+  if (di !== G.di){ G.di = di; popup(t(DISTRICTS[di].name), '#fff', 32, 2.0); SND.sfx.chime(); }
 
   // km checkpoints
   const km = Math.floor(displayKm() + 1e-6);
@@ -544,6 +852,7 @@ function update(dt){
     }
   }
   G.objs = G.objs.filter(o => o.z - G.z > -24 && o.z - G.z < 600);
+  if (!G.over) updateProps(dt);
 
   SND.engineSet((G.speed - CONFIG.speedMin) / (CONFIG.speedMax - CONFIG.speedMin), input.gas);
   tickFx(dt);
@@ -572,7 +881,7 @@ function drawSky(tn){
     poly([[x - c.w * .5, y], [x + c.w * .5, y], [x + c.w * .36, y + c.w * .05], [x - c.w * .4, y + c.w * .05]], '#e3eef6');
   }
   for (const b of skyline){
-    const x = b.x - camX * (b.far ? .8 : 1.4), h = b.h * (b.far ? .75 : 1), y = HOR;
+    const bizF = Math.max(0, Math.min(1, (G.z - GATE_Z[1] + 500) / 500)), x = b.x - camX * (b.far ? .8 : 1.4), h = b.h * (b.far ? .75 : 1) * (1 + bizF * 1.3), y = HOR;
     const pts = b.step
       ? [[x, y], [x, y - h * .7], [x + b.w * .3, y - h * .7], [x + b.w * .3, y - h], [x + b.w, y - h], [x + b.w, y]]
       : [[x, y], [x, y - h], [x + b.w, y - h], [x + b.w, y]];
@@ -597,9 +906,11 @@ function render(){
     if (z2 - camZ < NEAR) continue;
     const za = Math.max(z1, camZ + NEAR), idx = Math.round(z1 / SEG), alt = idx % 2 === 0, j = (rnd(idx) - .5) * 7;
     setFog(z1);
-    ground(-ROAD_HALF - 9, ROAD_HALF + 9, za, z2, alt ? [220, 212, 196] : [211, 203, 187]);
-    ground(-ROAD_HALF - .38, -ROAD_HALF, za, z2, alt ? COL.red : COL.white);
-    ground(ROAD_HALF, ROAD_HALF + .38, za, z2, alt ? COL.red : COL.white);
+    const Dw = DISTRICTS[districtIdx(z1)], cu = alt ? Dw.curb[0] : Dw.curb[1];
+    ground(-ROAD_HALF - 9, ROAD_HALF + 9, za, z2, alt ? Dw.walk[0] : Dw.walk[1]);
+    ground(-ROAD_HALF - .38, -ROAD_HALF, za, z2, cu);
+    ground(ROAD_HALF, ROAD_HALF + .38, za, z2, cu);
+    if (idx % 2 === 0){ const sl = shade(Dw.walk[1], -.06); ground(-ROAD_HALF - 2.45, -ROAD_HALF - 2.35, za, z2, sl); ground(ROAD_HALF + 2.35, ROAD_HALF + 2.45, za, z2, sl); }
     ground(-ROAD_HALF, ROAD_HALF, za, z2, [88 + j, 94 + j, 108 + j]);
     const dashEnd = z1 + SEG * .6;
     if (idx % 3 === 0 && dashEnd > za){
@@ -633,25 +944,18 @@ function render(){
   const B = 24, k0 = Math.floor((camZ - 24) / B), k1 = Math.floor((camZ + DRAW_DIST) / B);
   for (let k = k1; k >= k0; k--) for (const side of [-1, 1]) drawBuilding(k, side);
 
-  // pass 2: roadside props
-  const L = 30, l0 = Math.floor(camZ / L), l1 = Math.floor((camZ + DRAW_DIST) / L);
-  for (let k = l1; k >= l0; k--){
-    const z = k * L; if (z - camZ < NEAR) continue;
-    for (const side of [-1, 1]){ if ((k + (side > 0 ? 1 : 0)) % 2) drawLamp(side, z); else drawTree(side, z + 8, k * 2 + side); }
-  }
-  for (let km = 1; km < CONFIG.raceKm; km++){
-    const z = km * 1000 / CONFIG.distanceScale;
-    if (z - camZ > NEAR && z - camZ < DRAW_DIST) drawKmSign(km, z);
-  }
-
   // pass 3: road objects + player, far to near
   const list = G.objs.filter(o => o.z + o.hl - camZ > NEAR && o.z - camZ < DRAW_DIST).map(o => ({ z: o.z - o.hl, o }));
   list.push({ z: G.z - PLAYER.hl, player: true });
+  for (const p of G.props) if (p.z + 2.5 - camZ > NEAR && p.z - camZ < DRAW_DIST) list.push({ z: p.z - p.hl, prop: p });
+  for (const ov of overheadItems()) list.push({ z: ov.z, over: ov });
   if (FINISH_Z - camZ < DRAW_DIST && FINISH_Z - camZ > NEAR) list.push({ z: FINISH_Z, finish: true });
   list.sort((a, b) => b.z - a.z);
   for (const it of list){
     if (it.player) drawPlayer();
     else if (it.finish) drawFinishArch();
+    else if (it.prop) drawProp(it.prop);
+    else if (it.over) drawOver(it.over);
     else drawObj(it.o);
   }
   ctx.restore();
@@ -663,7 +967,7 @@ function render(){
   for (const p of G.popups){
     const k = p.t / p.life, a = k < .8 ? 1 : 1 - (k - .8) / .2, pop = k < .12 ? .7 + k / .12 * .3 : 1;
     fctx.globalAlpha = Math.max(0, a); fctx.textAlign = 'center'; fctx.textBaseline = 'middle';
-    fctx.font = `900 ${Math.round(p.size * pop)}px Rubik, 'Noto Sans Thai', sans-serif`;
+    fctx.font = `900 ${Math.round(p.size * pop)}px Rubik, 'Noto Sans Thai', 'Noto Sans SC', sans-serif`;
     fctx.lineWidth = 6; fctx.strokeStyle = 'rgba(20,20,20,.85)'; fctx.lineJoin = 'round';
     const y = py - k * 40;
     fctx.strokeText(p.text, W / 2, y); fctx.fillStyle = p.color; fctx.fillText(p.text, W / 2, y);
@@ -675,29 +979,35 @@ function render(){
 function drawBuilding(k, side){
   const B = 24, z0 = k * B + 1, z1 = z0 + 20;
   if (z1 - camZ < NEAR || z0 - camZ > DRAW_DIST) return;
-  const seed = k * 2 + (side > 0 ? 1 : 0);
-  const inner = ROAD_HALF + 2.6 + rnd(seed) * 1.4, wid = 7, h = 8 + rnd(seed + .3) * 20;
-  const base = hex(BLD_COLORS[Math.floor(rnd(seed + .7) * BLD_COLORS.length)]);
+  const seed = k * 2 + (side > 0 ? 1 : 0), di = districtIdx(z0 + 10), D = DISTRICTS[di];
+  const inner = ROAD_HALF + 2.6 + rnd(seed) * 1.4, wid = 7;
   const xc = side * (inner + wid / 2), xi = side * inner - side * .02;
   const d = Math.max(z0, camZ + NEAR) - camZ;
   setFog(z0 + 4);
+  if (di === 2) return drawTower(seed, side, z0, z1, xc, xi, wid, d, D);
+  if (di === 0 && k % 6 === 3 && rnd(seed + 8.1) > .4) return drawTemple(side, z0, z1, inner);
+  const base = hex(pick(D.bld, rnd(seed + .7))), h = D.hMin + rnd(seed + .3) * D.hVar;
   box(xc, wid / 2, z0, z1, 0, h, base, shade(base, -.14), shade(base, .3), base);
-  if (rnd(seed + 4.1) > .45 && d < 230){
+  if (di === 1){
+    const rc = rnd(seed + 6.1) > .5 ? [46,120,96] : [168,40,36];
+    box(xc, wid / 2 + .4, z0 - .4, z1 + .4, h, h + .45, rc, shade(rc, -.1), shade(rc, .2), rc);
+    if (rnd(seed + 6.3) > .5) hull(xc, z0 + 1, z1 - 1, h + .45, h + 2.4, wid / 2 + .2, .3, 1.8, 1.8, rc);
+  } else if (rnd(seed + 4.1) > .45 && d < 230){
     const tz = z0 + 4 + rnd(seed + 4.3) * 10;
-    box(xc + side * (rnd(seed + 4.5) - .5) * 2, .9, tz, tz + 1.8, h, h + 1.5, [222, 222, 214]);
+    box(xc + side * (rnd(seed + 4.5) - .5) * 2, .9, tz, tz + 1.8, h, h + 1.5, [222,222,214]);
   }
   if (d > 240) return;
   const za = Math.max(z0 + .8, camZ + NEAR), zb = z1 - .8;
   if (zb <= za) return;
-  // shophouse front + striped awning
-  poly([P(xi, za, 0), P(xi, zb, 0), P(xi, zb, 2.7), P(xi, za, 2.7)], [52, 60, 72]);
-  const aw = hex(SIGN_COLORS[Math.floor(rnd(seed + 5.1) * SIGN_COLORS.length)]), xo = xi - side * 1.15;
+  // shopfront + striped awning
+  poly([P(xi, za, 0), P(xi, zb, 0), P(xi, zb, 2.7), P(xi, za, 2.7)], [52,60,72]);
+  const aw = hex(pick(D.awn, rnd(seed + 5.1))), xo = xi - side * 1.15;
   for (let z = za, m = 0; z < zb; z += 2, m++){
     const ze = Math.min(zb, z + 2);
-    poly([P(xi, z, 3.05), P(xi, ze, 3.05), P(xo, ze, 2.55), P(xo, z, 2.55)], m % 2 ? [246, 240, 230] : aw);
+    poly([P(xi, z, 3.05), P(xi, ze, 3.05), P(xo, ze, 2.55), P(xo, z, 2.55)], m % 2 ? (di === 1 ? [224,170,50] : [246,240,230]) : aw);
   }
   // windows
-  const win = shade(base, -.45), lit = [255, 244, 205];
+  const win = shade(base, -.45), lit = [255,244,205];
   for (let f = 1; f * 3.2 + 1.6 < h && f < 8; f++){
     const h0 = f * 3.2 + .4, h1 = h0 + 1.5;
     if (d < 130){
@@ -708,49 +1018,84 @@ function drawBuilding(k, side){
       }
     } else poly([P(xi, za, h0), P(xi, zb, h0), P(xi, zb, h1), P(xi, za, h1)], win);
   }
-  // vertical shop sign sticking out toward the road
-  if (rnd(seed + 1.9) > .35){
-    const zs = z0 + 2 + rnd(seed + 2.3) * 12;
+  // Chinatown: red lanterns hanging under the awning
+  if (di === 1 && d < 130) for (let z = z0 + 2; z < z1 - 1; z += 4){
+    if (z - camZ < NEAR) continue;
+    box(xi - side * .7, .17, z, z + .34, 1.95, 2.4, [214,40,40]);
+  }
+  // horizontal shop board sticking out over the sidewalk (faces traffic)
+  if (rnd(seed + 7.1) > .35){
+    const zs = z0 + 15 + rnd(seed + 7.3) * 3;
     if (zs - camZ > NEAR){
-      const h0 = 3.4, h1 = h0 + 3 + rnd(seed + 2.9) * 3.5;
-      const sc = hex(SIGN_COLORS[Math.floor(rnd(seed + 3.1) * SIGN_COLORS.length)]);
+      const sc = hex(pick(D.sign, rnd(seed + 7.5)));
+      const f = box(xi - side * 1.05, 1.0, zs, zs + .14, 3.3, 4.3, sc);
+      if (f){ fq(f, .05, .1, .95, .9, shade(sc, .15)); ftext(f, pick(D.shop, rnd(seed + 7.7)), .5, .5, .6, di === 1 ? [255,214,90] : COL.white); }
+    }
+  }
+  // vertical shop sign
+  if (rnd(seed + 1.9) < D.signP){
+    const zs = z0 + 2 + rnd(seed + 2.3) * 11;
+    if (zs - camZ > NEAR){
+      const h0 = 4.5, h1 = h0 + 3 + rnd(seed + 2.9) * 3.5;
+      const sc = hex(pick(D.sign, rnd(seed + 3.1)));
       const f = box(xi - side * .85, .8, zs, zs + .22, h0, h1, sc, sc, shade(sc, .3), sc);
       if (f){
         fq(f, .08, .04, .92, .96, shade(sc, .14));
-        const txt = SIGN_TEXT[Math.floor(rnd(seed + 3.7) * SIGN_TEXT.length)];
+        const txt = pick(D.signTxt, rnd(seed + 3.7));
         const p = fpt(f, .5, .5), w = Math.abs(f.b[0] - f.a[0]), hh = Math.abs(f.a[1] - f.d[1]);
         if (w > 5){
-          ctx.fillStyle = rgb(fogc([255, 255, 255])); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-          ctx.save(); ctx.translate(p[0], p[1]);
-          if (txt.length > 2){ ctx.rotate(-Math.PI / 2); ctx.font = `800 ${Math.min(w * .6, hh / (txt.length * .62)).toFixed(1)}px 'Noto Sans Thai', Rubik, sans-serif`; }
-          else ctx.font = `800 ${(w * .62).toFixed(1)}px 'Noto Sans Thai', Rubik, sans-serif`;
-          ctx.fillText(txt, 0, 0); ctx.restore();
+          ctx.fillStyle = rgb(fogc(di === 1 ? [255,214,90] : [255,255,255])); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          if (di === 1){ // Chinese characters stacked top to bottom
+            const ch = [...txt], sz = Math.min(w * .66, hh / ch.length * .82);
+            ctx.font = `800 ${sz.toFixed(1)}px 'Noto Sans SC', Rubik, sans-serif`;
+            ch.forEach((c, i) => ctx.fillText(c, p[0], p[1] + (i - (ch.length - 1) / 2) * sz * 1.08));
+          } else {
+            ctx.save(); ctx.translate(p[0], p[1]);
+            if (txt.length > 2){ ctx.rotate(-Math.PI / 2); ctx.font = `800 ${Math.min(w * .6, hh / (txt.length * .62)).toFixed(1)}px 'Noto Sans Thai', Rubik, sans-serif`; }
+            else ctx.font = `800 ${(w * .62).toFixed(1)}px 'Noto Sans Thai', Rubik, sans-serif`;
+            ctx.fillText(txt, 0, 0); ctx.restore();
+          }
         }
       }
     }
   }
 }
-function drawLamp(side, z){
-  const x = side * (ROAD_HALF + .9); setFog(z);
-  box(x, .08, z - .08, z + .08, 0, 6.2, COL.pole);
-  box(x - side * .7, .7, z - .06, z + .06, 6.05, 6.2, COL.pole);
-  box(x - side * 1.35, .24, z - .13, z + .13, 5.86, 6.06, [252, 246, 214]);
+function drawTemple(side, z0, z1, inner){
+  const xc = side * (inner + 3.6), zc = (z0 + z1) / 2;
+  const white = [242,238,228], red = [196,52,40], orange = [232,122,40];
+  box(side * (inner + .2), .12, z0, z1, 0, 1.1, white);
+  box(side * (inner + .2), .16, zc - 1.6, zc - 1.3, 0, 2.2, PC.gold); box(side * (inner + .2), .16, zc + 1.3, zc + 1.6, 0, 2.2, PC.gold);
+  box(xc, 3.0, z0 + 3, z1 - 3, 0, 3.6, white, shade(white, -.1), white, shade(white, -.04));
+  box(xc, 3.05, z0 + 2.95, z1 - 2.95, 3.5, 3.8, PC.gold);
+  hull(xc, z0 + 1.6, z1 - 1.6, 3.8, 7.2, 3.9, .6, 3.2, 3.2, orange, shade(orange, -.12), shade(orange, .2));
+  hull(xc, z0 + 4.5, z1 - 4.5, 6.6, 9.6, 2.4, .3, 2.6, 2.6, red);
+  hull(xc, zc - .5, zc + .5, 9.4, 14.5, .45, .03, .45, .45, PC.gold);
 }
-function drawTree(side, z, seed){
-  if (z - 1.4 - camZ < NEAR) return;
-  const x = side * (ROAD_HALF + 1.7), g = rnd(seed) > .5 ? COL.leaf : COL.leaf2; setFog(z);
-  box(x, .13, z - .13, z + .13, 0, 2.2, COL.bark);
-  hull(x, z - 1.3, z + 1.3, 1.9, 3.3, 1.35, 1.0, .35, .35, g);
-  hull(x, z - 1.0, z + 1.0, 3.3, 4.8, 1.0, .16, .82, .82, shade(g, .07));
-}
-function drawKmSign(km, z){
-  const x = -(ROAD_HALF + 1.6); setFog(z);
-  for (const sx of [-1, 1]) box(x + sx * 1.0, .06, z + .02, z + .1, 0, 2.3, COL.pole);
-  const f = box(x, 1.3, z, z + .12, 2.2, 3.6, COL.green);
-  if (f){ fq(f, .05, .08, .95, .92, shade(COL.green, .08)); ftext(f, km + ' KM', .5, .5, .55, COL.white); }
+function drawTower(seed, side, z0, z1, xc, xi, wid, d, D){
+  const base = hex(pick(D.bld, rnd(seed + .7))), h = D.hMin + rnd(seed + .3) * D.hVar;
+  const f = box(xc, wid / 2, z0, z1, 0, h, base, shade(base, -.12), shade(base, .3), shade(base, .08));
+  if (rnd(seed + 4.1) > .4){
+    const h2 = h + 4 + rnd(seed + 4.2) * 8;
+    box(xc + side * .6, wid / 2 - 1.3, z0 + 2.5, z1 - 2.5, h, h2, shade(base, .06));
+    if (rnd(seed + 4.4) > .5) box(xc + side * .6, .07, z0 + 9.9, z0 + 10.1, h2, h2 + 6, COL.pole);
+  }
+  if (d > 270) return;
+  if (f) for (let i = 2, st = d < 120 ? 1 : 2; i * 3 < h - 1; i += st) fq(f, 0, i * 3 / h, 1, (i * 3 + .5) / h, shade(base, .34));
+  const za = Math.max(z0 + .4, camZ + NEAR), zb = z1 - .4;
+  if (zb <= za) return;
+  const band = shade(base, .38), mull = shade(base, -.3);
+  for (let hh = 6, st = d < 110 ? 3 : 6; hh < h - 1; hh += st) poly([P(xi, za, hh), P(xi, zb, hh), P(xi, zb, hh + .55), P(xi, za, hh + .55)], band);
+  if (d < 160) for (let z = z0 + 4; z < z1 - 1; z += 4){ if (z - camZ < NEAR) continue; poly([P(xi, z, 4.5), P(xi, z + .25, 4.5), P(xi, z + .25, h), P(xi, z, h)], mull); }
+  poly([P(xi, za, 0), P(xi, zb, 0), P(xi, zb, 4.5), P(xi, za, 4.5)], [40,52,66]);
+  const cz = z0 + 5 + rnd(seed + 5) * 6;
+  box(xi - side * 1.1, 1.1, cz, cz + 5, 4.0, 4.35, [200,204,210]);
+  if (cz - camZ > NEAR){
+    const sf = box(xi - side * 1.2, 1.1, cz - .14, cz, 4.35, 5.4, [30,36,46]);
+    if (sf) ftext(sf, pick(D.corp, rnd(seed + 5.5)), .5, .5, .6, COL.white);
+  }
 }
 function drawFinishArch(){
-  const z = FINISH_Z, hw = ROAD_HALF + .6; setFog(z);
+  const z = FINISH_Z, hw = ROAD_HALF + 2.7; setFog(z);
   for (const sx of [-1, 1]) box(sx * hw, .16, z - .16, z + .16, 0, 5.9, COL.black);
   const f = box(0, hw, z - .12, z + .12, 4.5, 5.9, COL.yellow);
   if (f){
@@ -880,7 +1225,7 @@ async function startGame(){
   showScreen(null); hud.style.display = 'block'; showControls(); updateHud();
   state = 'play';
   SND.engineStart(); SND.musicStart();
-  popup(t('go'), '#FFC800', 44, 1.0);
+  popup(t('go'), '#FFC800', 44, 1.0); popup(t('dThai'), '#fff', 24, 1.8);
 }
 function showResult(){
   state = 'over'; hud.style.display = 'none'; controls.style.display = 'none';
