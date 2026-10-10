@@ -102,6 +102,17 @@ button:focus-visible{outline:3px solid var(--black); outline-offset:3px;}
 .card .start{font-size:19px; padding:16px;}
 .link{border:none; background:none; color:var(--muted); font-size:14px; margin-top:10px; padding:8px;}
 
+@media (max-height: 760px){
+  #menu{padding-top:58px; padding-bottom:18px;}
+  .slogan{margin-top:12px;} .menu-bottom{gap:10px;}
+  .hero-car{width:min(200px,52vw);}
+  .seg button{padding:7px 11px;}
+  .start{padding:16px 20px;}
+}
+@media (max-height: 640px){
+  .brand{font-size:44px;} .sub{display:none;}
+  .hero-car{width:min(160px,42vw);}
+}
 @media (prefers-reduced-motion: reduce){ .btn,.start{transition:none;} }
 </style>
 </head>
@@ -141,6 +152,11 @@ button:focus-visible{outline:3px solid var(--black); outline-offset:3px;}
       <div class="opt-row"><span data-i="lang"></span>
         <div class="seg" id="langSeg">
           <button data-lang="th">ไทย</button><button data-lang="en">EN</button><button data-lang="ru">RU</button>
+        </div>
+      </div>
+      <div class="opt-row"><span data-i="vehicle"></span>
+        <div class="seg" id="vehSeg">
+          <button data-veh="car" data-i="vCar"></button><button data-veh="bike" data-i="vBike"></button>
         </div>
       </div>
       <div class="opt-row"><span data-i="controls"></span>
@@ -205,9 +221,9 @@ const CONFIG = {
 
 /* ========================= i18n ========================= */
 const I18N = {
-  ru:{ slogan:'Чем дальше проедешь — тем больше заработаешь!', sub:'Побудь водителем Maxim. Доедь до финиша и получи промокод до 500 ฿ на поездки.', lang:'Язык', controls:'Управление', ctlButtons:'Кнопки', ctlTilt:'Наклон', start:'Запустить игру', proto:'Прототип', score:'Очки', dist:'Путь', km:'км', gas:'ГАЗ', brake:'ТОРМОЗ', go:'Поехали!', near:'Вау! На волоске!', crash:'Бам!', splash:'Плюх! Лужа', kmUp:'+100 · {k} км', tierUp:'Промокод {v} открыт!', win:'Финиш!', lose:'Игра окончена', reward:'Твоя награда — промокод', showPromoter:'Покажи этот экран промоутеру, чтобы получить промокод', noReward:'Проедь хотя бы 1 км, чтобы получить промокод', again:'Играть снова', menu:'В меню', tiltOff:'Наклон недоступен — включены кнопки', stamp:'Результат от', dThai:'Тайский квартал', dChina:'Чайнатаун', dBiz:'Бизнес-центр' },
-  en:{ slogan:'The further you drive, the more you earn!', sub:'Be a Maxim driver. Reach the finish and win a ride promo code worth up to 500 ฿.', lang:'Language', controls:'Controls', ctlButtons:'Buttons', ctlTilt:'Tilt', start:'Start game', proto:'Prototype', score:'Score', dist:'Distance', km:'km', gas:'GAS', brake:'BRAKE', go:'Go!', near:'Wow! Close call!', crash:'Bang!', splash:'Splash!', kmUp:'+100 · {k} km', tierUp:'{v} promo code unlocked!', win:'Finish!', lose:'Game over', reward:'Your reward — promo code', showPromoter:'Show this screen to the promoter to get your promo code', noReward:'Drive at least 1 km to earn a promo code', again:'Play again', menu:'Menu', tiltOff:'Tilt unavailable — buttons enabled', stamp:'Result from', dThai:'Thai Quarter', dChina:'Chinatown', dBiz:'Business District' },
-  th:{ slogan:'ยิ่งขับไกล ยิ่งได้มาก!', sub:'ลองเป็นคนขับ Maxim ขับให้ถึงเส้นชัย รับโค้ดส่วนลดค่าเดินทางสูงสุด 500 บาท', lang:'ภาษา', controls:'การควบคุม', ctlButtons:'ปุ่มกด', ctlTilt:'เอียงเครื่อง', start:'เริ่มเกม', proto:'ต้นแบบ', score:'คะแนน', dist:'ระยะทาง', km:'กม.', gas:'เร่ง', brake:'เบรก', go:'ไปเลย!', near:'ว้าว! เฉียดฉิว!', crash:'โครม!', splash:'จ๋อม! แอ่งน้ำ', kmUp:'+100 · {k} กม.', tierUp:'ปลดล็อกโค้ด {v}!', win:'ถึงเส้นชัย!', lose:'จบเกม', reward:'รางวัลของคุณ — โค้ดส่วนลด', showPromoter:'แสดงหน้าจอนี้ให้โปรโมเตอร์เพื่อรับโค้ดส่วนลด', noReward:'ขับให้ได้อย่างน้อย 1 กม. เพื่อรับโค้ดส่วนลด', again:'เล่นอีกครั้ง', menu:'เมนู', tiltOff:'ใช้การเอียงไม่ได้ — เปลี่ยนเป็นปุ่มกด', stamp:'ผลการเล่นเมื่อ', dThai:'ย่านไทย', dChina:'ไชน่าทาวน์', dBiz:'ย่านธุรกิจ' },
+  ru:{ slogan:'Чем дальше проедешь — тем больше заработаешь!', sub:'Побудь водителем Maxim. Доедь до финиша и получи промокод до 500 ฿ на поездки.', lang:'Язык', controls:'Управление', ctlButtons:'Кнопки', ctlTilt:'Наклон', start:'Запустить игру', proto:'Прототип', score:'Очки', dist:'Путь', km:'км', gas:'ГАЗ', brake:'ТОРМОЗ', go:'Поехали!', near:'Вау! На волоске!', crash:'Бам!', splash:'Плюх! Лужа', kmUp:'+100 · {k} км', tierUp:'Промокод {v} открыт!', win:'Финиш!', lose:'Игра окончена', reward:'Твоя награда — промокод', showPromoter:'Покажи этот экран промоутеру, чтобы получить промокод', noReward:'Проедь хотя бы 1 км, чтобы получить промокод', again:'Играть снова', menu:'В меню', tiltOff:'Наклон недоступен — включены кнопки', stamp:'Результат от', vehicle:'Транспорт', vCar:'Машина', vBike:'Байк' },
+  en:{ slogan:'The further you drive, the more you earn!', sub:'Be a Maxim driver. Reach the finish and win a ride promo code worth up to 500 ฿.', lang:'Language', controls:'Controls', ctlButtons:'Buttons', ctlTilt:'Tilt', start:'Start game', proto:'Prototype', score:'Score', dist:'Distance', km:'km', gas:'GAS', brake:'BRAKE', go:'Go!', near:'Wow! Close call!', crash:'Bang!', splash:'Splash!', kmUp:'+100 · {k} km', tierUp:'{v} promo code unlocked!', win:'Finish!', lose:'Game over', reward:'Your reward — promo code', showPromoter:'Show this screen to the promoter to get your promo code', noReward:'Drive at least 1 km to earn a promo code', again:'Play again', menu:'Menu', tiltOff:'Tilt unavailable — buttons enabled', stamp:'Result from', vehicle:'Vehicle', vCar:'Car', vBike:'Bike' },
+  th:{ slogan:'ยิ่งขับไกล ยิ่งได้มาก!', sub:'ลองเป็นคนขับ Maxim ขับให้ถึงเส้นชัย รับโค้ดส่วนลดค่าเดินทางสูงสุด 500 บาท', lang:'ภาษา', controls:'การควบคุม', ctlButtons:'ปุ่มกด', ctlTilt:'เอียงเครื่อง', start:'เริ่มเกม', proto:'ต้นแบบ', score:'คะแนน', dist:'ระยะทาง', km:'กม.', gas:'เร่ง', brake:'เบรก', go:'ไปเลย!', near:'ว้าว! เฉียดฉิว!', crash:'โครม!', splash:'จ๋อม! แอ่งน้ำ', kmUp:'+100 · {k} กม.', tierUp:'ปลดล็อกโค้ด {v}!', win:'ถึงเส้นชัย!', lose:'จบเกม', reward:'รางวัลของคุณ — โค้ดส่วนลด', showPromoter:'แสดงหน้าจอนี้ให้โปรโมเตอร์เพื่อรับโค้ดส่วนลด', noReward:'ขับให้ได้อย่างน้อย 1 กม. เพื่อรับโค้ดส่วนลด', again:'เล่นอีกครั้ง', menu:'เมนู', tiltOff:'ใช้การเอียงไม่ได้ — เปลี่ยนเป็นปุ่มกด', stamp:'ผลการเล่นเมื่อ', vehicle:'ยานพาหนะ', vCar:'รถยนต์', vBike:'มอเตอร์ไซค์' },
 };
 const LOCALE = { ru:'ru-RU', en:'en-GB', th:'th-TH' };
 let lang = 'th';
@@ -262,7 +278,7 @@ const SND = (() => {
   function engineStop(){ if (engOsc){ try{ engOsc.stop(); }catch(e){} engOsc.disconnect(); engOsc = null; } }
   function engineSet(n, gas){
     if (!engOsc) return; const now = ac.currentTime;
-    engOsc.frequency.setTargetAtTime(52 + n * 95 + (gas ? 14 : 0), now, 0.08);
+    engOsc.frequency.setTargetAtTime((52 + n * 95 + (gas ? 14 : 0)) * (vehicle === 'bike' ? 1.6 : 1), now, 0.08);
     engFilter.frequency.setTargetAtTime(280 + n * 750, now, 0.1);
   }
   // pentatonic loop with a light Asian flavour
@@ -417,7 +433,7 @@ const districtIdx = z => z < GATE_Z[0] ? 0 : z < GATE_Z[1] ? 1 : 2;
 const pick = (arr, r) => arr[Math.min(arr.length - 1, Math.floor(r * arr.length))];
 function pickW(list, r){ let s = 0; for (const it of list) s += it[1]; r *= s; for (const it of list){ if ((r -= it[1]) < 0) return it[0]; } return list[0][0]; }
 const DISTRICTS = [
-  { id:'thai', name:'dThai', hMin:7, hVar:9, signP:.6,
+  { id:'thai', hMin:7, hVar:9, signP:.6,
     bld:['#7FD1C7','#F4A6A0','#B9A7F2','#9FD38A','#8EC5F0','#F6C48B','#E9E2D5','#F2A9CF'],
     awn:['#E5484D','#00A6A6','#1E5BD8','#2BB673','#F0386B','#FF8A3D'],
     sign:['#E5484D','#00A6A6','#1E5BD8','#141414','#F0386B','#2BB673','#FF8A3D'],
@@ -428,7 +444,7 @@ const DISTRICTS = [
     pots:['bush','flower','snake','palm','jar','jar'],
     walk:[[220,212,196],[211,203,187]], curb:[[229,72,77],[242,242,238]],
     props:[['pot',38],['board',18],['cart',14],['spirit',12],['billboard',10]], density:.7 },
-  { id:'china', name:'dChina', hMin:12, hVar:10, signP:.9,
+  { id:'china', hMin:12, hVar:10, signP:.9,
     bld:['#B8322F','#D9A441','#EADBC0','#4E9A86','#9C4A3A','#E2C79A','#C65B3C'],
     awn:['#C8102E','#E0A526','#1E6B52','#7A1E1E'],
     sign:['#C8102E','#141414','#B8860B','#1E6B52','#C8102E'],
@@ -439,7 +455,7 @@ const DISTRICTS = [
     pots:['bamboo','bonsai','bamboo','flower'],
     walk:[[204,176,160],[194,166,150]], curb:[[229,72,77],[242,242,238]],
     props:[['pot',36],['board',24],['cart',16],['billboard',14]], density:.72 },
-  { id:'biz', name:'dBiz', hMin:24, hVar:38, signP:0,
+  { id:'biz', hMin:24, hVar:38, signP:0,
     bld:['#5B7FA6','#7DA3C4','#3E5C7A','#9BB7CF','#6E8FAE','#4A6D8C','#A9BFD0'],
     corp:['BANK','OFFICE','HOTEL','PLAZA','TOWER','MALL','CO-WORK','FINANCE'],
     sign:['#1E5BD8','#141414','#2BB673','#E5484D','#5B6B7A'],
@@ -724,7 +740,7 @@ function popup(text, color = '#fff', size = 30, life = 1.1){ G.popups.push({ tex
 
 function spawnAt(z){
   const p = Math.min(1, G.z / FINISH_Z);
-  const weights = [['car', 30], ['oncoming', 16 + 14 * p], ['tuktuk', 18], ['pothole', 12], ['puddle', 12], ['stop', 7]];
+  const weights = [['car', 30], ['oncoming', 16 + 14 * p], ['tuktuk', 18], ['puddle', 14], ['stop', 7]];
   let sum = weights.reduce((a, w) => a + w[1], 0), r = Math.random() * sum, type = 'car';
   for (const [k, w] of weights){ if ((r -= w) < 0){ type = k; break; } }
   let lane;
@@ -798,7 +814,7 @@ function update(dt){
   G.z += G.speed * dt;
   if (G.invuln > 0) G.invuln -= dt;
   const di = districtIdx(G.z);
-  if (di !== G.di){ G.di = di; popup(t(DISTRICTS[di].name), '#fff', 32, 2.0); SND.sfx.chime(); }
+  G.di = di;
 
   // km checkpoints
   const km = Math.floor(displayKm() + 1e-6);
@@ -1171,11 +1187,63 @@ function drawPlayer(){
   const pivot = P(G.x, G.z - PLAYER.hl, 0);
   ctx.save();
   if (G.invuln > 0 && Math.floor(G.time * 12) % 2 === 0) ctx.globalAlpha = .35;
-  ctx.translate(pivot[0], pivot[1]); ctx.rotate(G.lean * .07); ctx.translate(-pivot[0], -pivot[1]);
-  drawHeroCar(G.x, G.z);
+  ctx.translate(pivot[0], pivot[1]); ctx.rotate(G.lean * (vehicle === 'bike' ? .3 : .07)); ctx.translate(-pivot[0], -pivot[1]);
+  drawVehicle(G.x, G.z);
   ctx.restore();
 }
-// the menu car is rendered by the same engine, close up
+// classic South-East Asian underbone scooter with a rider in the yellow Maxim jacket
+function drawBike(x, z){
+  const K = 1.35, hl = 1.0, zN = z - hl, zF = z + hl;   // drawn ~35% oversized so it reads at low resolution
+  const X = v => x + (v - x) * K, Zs = v => z + (v - z) * K;
+  const Bx = (cx, hw, zn, zf, h0, h1, c, n, t, sd) => box(X(cx), hw * K, Zs(zn), Zs(zf), h0 * K, h1 * K, c, n, t, sd);
+  const Hx = (cx, zn, zf, h0, h1, a, b, tn, tf, c, n, t) => hull(X(cx), Zs(zn), Zs(zf), h0 * K, h1 * K, a * K, b * K, tn * K, tf * K, c, n, t);
+  if (Zs(zF) - camZ < NEAR) return null;
+  const jacket = COL.yellow, pants = [42,46,62], body = [34,36,42], metal = [92,98,110];
+  shadow(x, Zs(zN - .1), Zs(zF + .1), .42 * K);
+  // wheels, rear and front
+  Bx(x, .1, zN, zN + .62, 0, .62, COL.tire); Bx(x, .06, zN + .18, zN + .44, .2, .42, metal);
+  Bx(x, .09, zF - .6, zF, 0, .6, COL.tire);
+  // frame, engine, footboard
+  Bx(x, .15, zN + .55, zF - .55, .22, .55, metal);
+  Bx(x, .26, zN + .7, zF - .7, .38, .46, body);
+  // front leg shield and cowl in Maxim yellow
+  Hx(x, zF - .78, zF - .5, .3, 1.15, .22, .3, 0, 0, jacket);
+  const cowl = Bx(x, .17, zF - .6, zF - .38, 1.0, 1.32, jacket);
+  if (cowl) fq(cowl, .2, .3, .8, .7, COL.head);
+  // handlebar and mirrors
+  Bx(x, .4, zF - .62, zF - .52, 1.24, 1.32, COL.black);
+  for (const sx of [-1, 1]){ Bx(x + sx * .3, .02, zF - .6, zF - .56, 1.32, 1.56, COL.black); Bx(x + sx * .32, .07, zF - .61, zF - .55, 1.56, 1.66, COL.black); }
+  // rear body, seat, tail light and plate
+  const tail = Bx(x, .2, zN + .02, zN + .85, .55, .84, body);
+  if (tail){ fq(tail, .15, .55, .85, .9, COL.red); fq(tail, .3, .08, .7, .42, COL.white); }
+  Bx(x, .2, zN + .25, zN + 1.08, .84, .94, COL.black);
+  // rider: legs on the footboard, torso, arms to the handlebar, helmet
+  for (const sx of [-1, 1]){
+    Bx(x + sx * .17, .08, zN + .55, zN + 1.05, .82, .98, pants);
+    Bx(x + sx * .21, .07, zN + .98, zN + 1.14, .46, .9, pants);
+    Bx(x + sx * .21, .08, zN + 1.0, zN + 1.22, .44, .52, COL.black);
+  }
+  const back = Hx(x, zN + .55, zN + .95, .94, 1.64, .28, .23, 0, .05, jacket, shade(jacket, -.08), shade(jacket, .2));
+  if (back){ fq(back, 0, .5, 1, .7, COL.black); ftext(back, 'MAXIM', .5, .6, .17, jacket); fq(back, .3, .93, .7, 1, shade(jacket, -.25)); }
+  for (const sx of [-1, 1]) Bx(x + sx * .29, .065, zN + .72, zF - .58, 1.24, 1.42, jacket);
+  Bx(x, .08, zN + .66, zN + .82, 1.62, 1.72, [196,150,120]);
+  const helm = Bx(x, .17, zN + .6, zN + .94, 1.7, 2.02, jacket);
+  Hx(x, zN + .62, zN + .92, 2.02, 2.1, .17, .09, .05, .05, jacket);
+  if (helm){ fq(helm, .42, 0, .58, 1, COL.black); fq(helm, 0, 0, 1, .12, COL.black); }
+  return { back };
+}
+const VEH = { car: { hw:.9, hl:2.1 }, bike: { hw:.5, hl:1.3 } };
+const BIKE = VEH.bike;
+let vehicle = 'car';
+try { const v = localStorage.getItem('md_vehicle'); if (v && VEH[v]) vehicle = v; } catch(e){}
+function setVehicle(v){
+  vehicle = v; Object.assign(PLAYER, VEH[v]);
+  document.querySelectorAll('#vehSeg button').forEach(b => b.classList.toggle('on', b.dataset.veh === v));
+  try { localStorage.setItem('md_vehicle', v); } catch(e){}
+  renderHero();
+}
+function drawVehicle(x, z){ return vehicle === 'bike' ? drawBike(x, z) : drawHeroCar(x, z); }
+// the menu vehicle is rendered by the same engine, close up
 function renderHero(){
   const r = heroCv.getBoundingClientRect(); if (!r.width) return;
   const w = r.width, h = r.height, q = Math.min(1, CONFIG.retroWidth * .6 / w);
@@ -1183,10 +1251,11 @@ function renderHero(){
   const sv = { ctx, W, H, F, HOR, CX, Q, camX, camZ, camH, fog };
   ctx = heroCv.getContext('2d'); ctx.setTransform(q, 0, 0, q, 0, 0); ctx.clearRect(0, 0, w, h);
   Q = q; fog = 0; W = w; H = h;
-  camZ = -7.4; camH = 3.6; camX = -1.9; F = w * 1.38;
+  if (vehicle === 'bike'){ camZ = -6.6; camH = 3.4; camX = -1.5; F = w * 1.25; }
+  else { camZ = -7.4; camH = 3.6; camX = -1.9; F = w * 1.38; }
   const s = F / (-PLAYER.hl - camZ);
   CX = w / 2 + camX * s * 1.12; HOR = h * .93 - camH * s;
-  drawHeroCar(0, 0);
+  drawVehicle(0, 0);
   ({ ctx, W, H, F, HOR, CX, Q, camX, camZ, camH, fog } = sv);
 }
 
@@ -1225,7 +1294,7 @@ async function startGame(){
   showScreen(null); hud.style.display = 'block'; showControls(); updateHud();
   state = 'play';
   SND.engineStart(); SND.musicStart();
-  popup(t('go'), '#FFC800', 44, 1.0); popup(t('dThai'), '#fff', 24, 1.8);
+  popup(t('go'), '#FFC800', 44, 1.0);
 }
 function showResult(){
   state = 'over'; hud.style.display = 'none'; controls.style.display = 'none';
@@ -1265,6 +1334,7 @@ document.querySelectorAll('#langSeg button').forEach(b => b.addEventListener('cl
   lang = b.dataset.lang; try{ localStorage.setItem('md_lang', lang); }catch(e){} applyLang();
 }));
 document.querySelectorAll('#ctlSeg button').forEach(b => b.addEventListener('click', () => setCtl(b.dataset.ctl)));
+document.querySelectorAll('#vehSeg button').forEach(b => b.addEventListener('click', () => setVehicle(b.dataset.veh)));
 $('startBtn').addEventListener('click', startGame);
 $('againBtn').addEventListener('click', startGame);
 $('menuBtn').addEventListener('click', () => { state = 'menu'; showScreen('menu'); fctx.clearRect(0, 0, W, H); renderHero(); });
@@ -1281,7 +1351,7 @@ function frame(now){
   if (G && state !== 'menu') render();
   requestAnimationFrame(frame);
 }
-resize(); setCtl('buttons'); applyLang();
+resize(); setCtl('buttons'); applyLang(); setVehicle(vehicle);
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(renderHero);
 requestAnimationFrame(frame);
 </script>
